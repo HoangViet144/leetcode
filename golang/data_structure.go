@@ -1,27 +1,37 @@
-type IntStack struct {
-    ar []int
+type node struct {
+    value interface{}
+    prev *node
+}	
+
+type Stack struct {
+    head *node
+    length int
 }
 
-func (st *IntStack) push (ele int){
-    st.ar = append(st.ar, ele)
+
+func NewStack() *Stack {
+	return &Stack{nil,0}
 }
 
-func (st *IntStack) size () int {
-    return len(st.ar)
+func (st *Stack) size() int {
+	return st.length
 }
 
-func (st *IntStack) pop() int {
-    if st.size() == 0 {
-        return int(1<<31)
-    }
-    topEle := st.ar[st.size()-1]
-    st.ar = st.ar[:st.size()-1]
-    return topEle
+func (st *Stack) top() interface{} {
+	if st.length == 0 {
+		return nil
+	}
+	return st.head.value
 }
 
-func (st *IntStack) top() int {
-    if st.size() == 0 {
-        return int(1<<31)
-    }
-    return st.ar[st.size()-1]
+func (st *Stack) pop() interface{} {
+	if st.length == 0 {
+		return nil
+	}
+	
+	headNode := st.head
+	st.head = headNode.prev
+	st.length--
+	return headNode.value
 }
+
